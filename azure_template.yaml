@@ -5,13 +5,17 @@
 #     name: mdolab/.github  # repository name (format depends on `type`)
 #     endpoint: bernardopacini
 parameters:
-- name: 'REPO_NAME'
+- name: REPO_NAME
   type: string
-
-variables:
-  MDOLAB_USER: /home/mdolabuser/
-  DOCKER_WORKING_DIR: ${{ variables.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
-  DOCKER_MOUNT_DIR: ${{ variables.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
+- name: MDOLAB_USER
+  default: /home/mdolabuser/
+  type: string
+- name: DOCKER_WORKING_DIR
+  default: ${{ parameters.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
+  type: string
+- name: DOCKER_MOUNT_DIR
+  default: ${{ parameters.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
+  type: string
   
 # - name: 'DOCKER_WORKING_DIR'
 #   type: string
