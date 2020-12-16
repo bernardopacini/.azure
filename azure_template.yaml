@@ -1,26 +1,6 @@
-# resources:
-#   repositories:
-#   - repository: github_template  # identifier (A-Z, a-z, 0-9, and underscore)
-#     type: github  # see the following "Type" topic
-#     name: mdolab/.github  # repository name (format depends on `type`)
-#     endpoint: bernardopacini
 parameters:
 - name: REPO_NAME
   type: string
-# - name: MDOLAB_USER
-#   default: /home/mdolabuser/
-#   type: string
-# - name: DOCKER_WORKING_DIR
-#   default: ${{ parameters.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
-#   type: string
-# - name: DOCKER_MOUNT_DIR
-#   default: ${{ parameters.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
-#   type: string
-  
-# - name: 'DOCKER_WORKING_DIR'
-#   type: string
-# - name: 'DOCKER_MOUNT_DIR'
-#   type: string
 
 jobs:
 - job:
@@ -34,22 +14,25 @@ jobs:
         DOCKER_TAG: u20-gcc-ompi-latest
       'u20-gcc-ompi-stable':
         DOCKER_TAG: u20-gcc-ompi-stable
+      if complex:
+      - add tests
   variables:
     MDOLAB_USER: /home/mdolabuser/
     DOCKER_WORKING_DIR: ${{ variables.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
     DOCKER_MOUNT_DIR: ${{ variables.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
   steps:
-  - script: docker pull mdolab/public:$(DOCKER_TAG)
-  - script: docker run -t -d 
+  - script: |
+      docker pull mdolab/public:$(DOCKER_TAG)
+      docker run -t -d 
         --name app
         --mount "type=bind,src=$(pwd),target=${{ variables.DOCKER_MOUNT_DIR }}"
         mdolab/public:$(DOCKER_TAG)
         /bin/bash
-  - script: docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp config/defaults/config.LINUX_GFORTRAN.mk config/config.mk && make";
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
-  - script: docker rm -f app
+      docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
+      docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp config/defaults/config.LINUX_GFORTRAN.mk config/config.mk && make";
+      docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
+      docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
+      docker rm -f app
 
 - job: flake8
   steps:
