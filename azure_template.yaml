@@ -1,9 +1,9 @@
-resources:
-  repositories:
-  - repository: github_template  # identifier (A-Z, a-z, 0-9, and underscore)
-    type: github  # see the following "Type" topic
-    name: mdolab/.github  # repository name (format depends on `type`)
-    endpoint: bernardopacini
+# resources:
+#   repositories:
+#   - repository: github_template  # identifier (A-Z, a-z, 0-9, and underscore)
+#     type: github  # see the following "Type" topic
+#     name: mdolab/.github  # repository name (format depends on `type`)
+#     endpoint: bernardopacini
 
 jobs:
 - job:
@@ -30,17 +30,17 @@ jobs:
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
   - script: docker rm -f app 
 
-- job: flake8
-  steps:
-  - checkout: self
-  - checkout: github_template
-  - script: |
-      ls -a .
-      cd pyspline
-      cp ../.github/.flake8 .
-      python3 -m pip install -U pip
-      pip3 install flake8
-      python3 -m flake8 . --count --show-source --statistics
+# - job: flake8
+#   steps:
+#   - checkout: self
+#   - checkout: github_template
+#   - script: |
+#       ls -a .
+#       cd pyspline
+#       cp ../.github/.flake8 .
+#       python3 -m pip install -U pip
+#       pip3 install flake8
+#       python3 -m flake8 . --count --show-source --statistics
 
 - job: black
   steps:
