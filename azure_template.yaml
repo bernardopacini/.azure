@@ -2,7 +2,7 @@ parameters:
 - name: REPO_NAME
   type: string
 - name: COMPLEX
-  type: bool
+  type: boolean
 
 jobs:
 - job:
