@@ -4,6 +4,11 @@
 #     type: github  # see the following "Type" topic
 #     name: mdolab/.github  # repository name (format depends on `type`)
 #     endpoint: bernardopacini
+parameters:
+- name: 'DOCKER_WORKING_DIR'
+  type: string
+- name: 'DOCKER_MOUNT_DIR'
+  type: string
 
 jobs:
 - job:
@@ -21,14 +26,14 @@ jobs:
   - script: docker pull mdolab/public:$(DOCKER_TAG)
   - script: docker run -t -d 
         --name app
-        --mount "type=bind,src=$(pwd),target=${{ variables.DOCKER_MOUNT_DIR }}"
+        --mount "type=bind,src=$(pwd),target=${{ parameters.DOCKER_MOUNT_DIR }}"
         mdolab/public:$(DOCKER_TAG)
         /bin/bash
-  - script: docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp config/defaults/config.LINUX_GFORTRAN.mk config/config.mk && make";
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
-  - script: docker rm -f app 
+  - script: docker exec app /bin/bash -c "rm -rf ${{ parameters.DOCKER_WORKING_DIR }} && cp -r ${{ parameters.DOCKER_MOUNT_DIR }} ${{ parameters.DOCKER_WORKING_DIR }}"
+  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ parameters.DOCKER_WORKING_DIR }} && cp config/defaults/config.LINUX_GFORTRAN.mk config/config.mk && make";
+  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ parameters.DOCKER_WORKING_DIR }} && pip install ."
+  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ parameters.DOCKER_WORKING_DIR }} && testflo . -v"
+  - script: docker rm -f app
 
 # - job: flake8
 #   steps:
