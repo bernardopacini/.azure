@@ -42,7 +42,7 @@ jobs:
   - script: |
       ls -a .
       cd pyspline
-      cp ../.github/.flake8 .
+      cp ../.azure/.flake8 .
       python3 -m pip install -U pip
       pip3 install flake8
       python3 -m flake8 . --count --show-source --statistics
