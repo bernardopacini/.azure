@@ -7,15 +7,15 @@
 parameters:
 - name: REPO_NAME
   type: string
-- name: MDOLAB_USER
-  default: /home/mdolabuser/
-  type: string
-- name: DOCKER_WORKING_DIR
-  default: ${{ parameters.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
-  type: string
-- name: DOCKER_MOUNT_DIR
-  default: ${{ parameters.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
-  type: string
+# - name: MDOLAB_USER
+#   default: /home/mdolabuser/
+#   type: string
+# - name: DOCKER_WORKING_DIR
+#   default: ${{ parameters.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
+#   type: string
+# - name: DOCKER_MOUNT_DIR
+#   default: ${{ parameters.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
+#   type: string
   
 # - name: 'DOCKER_WORKING_DIR'
 #   type: string
@@ -34,6 +34,10 @@ jobs:
         DOCKER_TAG: u20-gcc-ompi-latest
       'u20-gcc-ompi-stable':
         DOCKER_TAG: u20-gcc-ompi-stable
+  variables:
+    MDOLAB_USER: /home/mdolabuser/
+    DOCKER_WORKING_DIR: ${{ variables.MDOLAB_USER }}/repos/${{ parameters.REPO_NAME }}
+    DOCKER_MOUNT_DIR: ${{ variables.MDOLAB_USER }}/travis/${{ parameters.REPO_NAME }}
   steps:
   - script: docker pull mdolab/public:$(DOCKER_TAG)
   - script: docker run -t -d 
