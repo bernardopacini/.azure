@@ -40,7 +40,7 @@ jobs:
   - checkout: self
   - checkout: azure_template
   - script: |
-      ls -a .
+      ls -a .azure/
       cd pyspline
       cp ../.azure/.flake8 .
       python3 -m pip install -U pip
