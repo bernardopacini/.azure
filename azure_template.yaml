@@ -7,6 +7,8 @@ parameters:
   type: string
 - name: INTEL_CONFIG
   type: string
+- name: EXEC_TESTS
+  type: string
 
 jobs:
 - job:
@@ -35,8 +37,9 @@ jobs:
       docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp $(CONFIG_FILE) config/config.mk && make";
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
-      docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
+      ${{ parameters.EXEC_TESTS }}
       docker rm -f app
+# docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
 
 - job:
   condition: eq(${{ parameters.COMPLEX }}, true)
