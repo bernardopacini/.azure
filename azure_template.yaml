@@ -7,8 +7,8 @@ parameters:
   type: string
 - name: INTEL_CONFIG
   type: string
-- name: EXEC_TESTS
-  type: string
+- name: INPUT_FILES
+  type: boolean
 
 jobs:
 - job:
@@ -37,10 +37,24 @@ jobs:
       docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp $(CONFIG_FILE) config/config.mk && make";
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
-      ${{ parameters.EXEC_TESTS }}
+      ${{ if eq(parameters.INPUT_FILES, true) }}:
+        docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }}/input_files && ./get-input-files.sh
+      docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
       docker rm -f app
-# docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v"
 
+ - powershell: |
+      if ($env:Build_SourceBranchName -eq 'master') {
+        Write-Host ##vso[task.setvariable variable=env;isOutput=true]a
+        return
+      } else {
+        Write-Host ##vso[task.setvariable variable=env;isOutput=true]b
+      }      
+
+        - name: var1
+    ${{ if eq(parameters.var1, 'custom') }}:
+      value: $(var1.manual.custom)
+    ${{ if ne(parameters.var1, 'custom') }}:
+      value: ${{ parameters.var1 }}
 # - job:
 #   condition: eq(${{ parameters.COMPLEX }}, true)
 #   strategy:
