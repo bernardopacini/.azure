@@ -89,7 +89,7 @@ jobs:
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
     displayName: Run Tests
   - script: docker rm -f app
-
+    displayName: Cleanup
 
 - job: flake8
   steps:
