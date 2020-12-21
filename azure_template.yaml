@@ -39,7 +39,7 @@ jobs:
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
       if [[ ${{ parameters.INPUT_FILES}} ]]
       then
-        docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }}/input_files && ./get-input-files.sh
+        docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }}/input_files && ./get-input-files.sh"
       fi
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
       docker rm -f app
