@@ -91,18 +91,33 @@ jobs:
     displayName: Run Tests
 
 - job: flake8
+  # continueOnError: true
   condition: eq(${{ parameters.STYLE_CHECK }}, true)
   steps:
   - checkout: self
   - checkout: azure_template
   - script: |
       cd ${{ parameters.REPO_NAME }}
-      cp ../.azure/.flake8 .
       python3 -m pip install -U pip
       pip3 install flake8
-      python3 -m flake8 . --count --show-source --statistics
+
+      if [[ -f ".flake8" ]]; then
+        export FL8=.flake8-project
+        mv .flake8 $FL8; # rename the file from code repo; should have higher precedence in merge
+      fi
+
+      cp ../.azure/.flake8 .
+
+      if [[ -f "$FL8" ]]; then # combine the exclude entries from both config files
+          cp ../.azure/combine-exclude.py;
+          python3 combine-exclude.py $FL8;
+          flake8 . --append-config $FL8 --count --show-source --statistics;
+      else
+          flake8 . --count --show-source --statistics;
+      fi
 
 - job: black
+  # continueOnError: true
   condition: eq(${{ parameters.STYLE_CHECK }}, true)
   steps:
   - script: |
