@@ -1,4 +1,4 @@
-variables:
+parameters:
   - name: TestMatrix
     type: object
     default:
