@@ -89,6 +89,7 @@ jobs:
     displayName: Run Tests
 
 - job: flake8
+  continueOnError: true
   steps:
   - checkout: self
   - checkout: azure_template
