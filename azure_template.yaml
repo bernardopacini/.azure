@@ -32,8 +32,7 @@ jobs:
     DOCKER_MOUNT_DIR: ${{ variables.MDOLAB_USER }}/azure/${{ parameters.REPO_NAME }}
   steps:
   - script: |
-      export set -e
-      dockerd pull mdolab/public:$(DOCKER_TAG)
+      docker pull mdolab/public:$(DOCKER_TAG)
       docker run -t -d --name app --mount "type=bind,src=$(pwd),target=${{ variables.DOCKER_MOUNT_DIR }}" mdolab/public:$(DOCKER_TAG) /bin/bash
       docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
       docker exec app /bin/bash -c ". \$HOME/.bashrc && cd ${{ variables.DOCKER_WORKING_DIR }} && cp $(CONFIG_FILE) config/config.mk"
@@ -48,8 +47,6 @@ jobs:
     displayName: Install Package
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
     displayName: Run Tests
-  - script: docker rm -f app
-    displayName: Cleanup
 
 - job:
   condition: eq(${{ parameters.COMPLEX }}, true)
@@ -73,7 +70,6 @@ jobs:
     DOCKER_MOUNT_DIR: ${{ variables.MDOLAB_USER }}/azure/${{ parameters.REPO_NAME }}
   steps:
   - script: |
-      set -e
       docker pull mdolab/public:$(DOCKER_TAG)
       docker run -t -d --name app --mount "type=bind,src=$(pwd),target=${{ variables.DOCKER_MOUNT_DIR }}" mdolab/public:$(DOCKER_TAG) /bin/bash
       docker exec app /bin/bash -c "rm -rf ${{ variables.DOCKER_WORKING_DIR }} && cp -r ${{ variables.DOCKER_MOUNT_DIR }} ${{ variables.DOCKER_WORKING_DIR }}"
@@ -91,8 +87,6 @@ jobs:
     displayName: Install Package
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
     displayName: Run Tests
-  - script: docker rm -f app
-    displayName: Cleanup
 
 - job: flake8
   steps:
