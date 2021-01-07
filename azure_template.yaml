@@ -111,9 +111,9 @@ jobs:
       if [[ -f "$FL8" ]]; then # combine the exclude entries from both config files
           cp ../.azure/combine-exclude.py .;
           python3 combine-exclude.py $FL8;
-          flake8 . --append-config $FL8 --count --show-source --statistics;
+          python3 -m flake8 . --append-config $FL8 --count --show-source --statistics;
       else
-          flake8 . --count --show-source --statistics;
+          python3 -m flake8 . --count --show-source --statistics;
       fi
 
 - job: black
