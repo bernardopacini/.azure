@@ -109,7 +109,7 @@ jobs:
       cp ../.azure/.flake8 .
 
       if [[ -f "$FL8" ]]; then # combine the exclude entries from both config files
-          cp ../.azure/combine-exclude.py;
+          cp ../.azure/combine-exclude.py .;
           python3 combine-exclude.py $FL8;
           flake8 . --append-config $FL8 --count --show-source --statistics;
       else
