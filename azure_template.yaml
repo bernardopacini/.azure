@@ -9,6 +9,8 @@ parameters:
   type: string
 - name: INPUT_FILES
   type: boolean
+- name: STYLE_CHECK
+  type: boolean
 
 jobs:
 - job:
@@ -89,7 +91,7 @@ jobs:
     displayName: Run Tests
 
 - job: flake8
-  continueOnError: true
+  condition: eq(${{ parameters.STYLE_CHECK }}, true)
   steps:
   - checkout: self
   - checkout: azure_template
@@ -101,6 +103,7 @@ jobs:
       python3 -m flake8 . --count --show-source --statistics
 
 - job: black
+  condition: eq(${{ parameters.STYLE_CHECK }}, true)
   steps:
   - script: |
       python3 -m pip install -U pip
