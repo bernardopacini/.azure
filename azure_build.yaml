@@ -47,7 +47,7 @@ jobs:
   - script: |
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp $(CONFIG_FILE) config/config.mk"
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_MAKE }}"
-    displayName: Make Real
+    displayName: Make
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_INSTALL }}"
     displayName: Install Package
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_TEST }}"
