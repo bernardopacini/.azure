@@ -11,16 +11,22 @@ parameters:
   type: boolean
 - name: STYLE_CHECK
   type: boolean
-- name: STEPS_MAKE
+- name: STEPS_MAKE_REAL
   type: string
-- name: STEPS_INSTALL
-  type: string  
-- name: STEPS_TEST
+- name: STEPS_INSTALL_REAL
+  type: string
+- name: STEPS_TEST_REAL
+  type: string
+- name: STEPS_MAKE_COMPLEX
+  type: string
+- name: STEPS_INSTALL_COMPLEX
+  type: string
+- name: STEPS_TEST_COMPLEX
   type: string
 
 stages:
 - stage:
-  displayName: Make Real
+  displayName: Test Real
   jobs:
   - template: azure_build.yaml
     parameters:
@@ -34,7 +40,7 @@ stages:
 
 - stage:
   dependsOn: []
-  displayName: Make Complex
+  displayName: Test Complex
   condition: eq(${{ parameters.COMPLEX }}, true)
   jobs:
   - template: azure_build.yaml
