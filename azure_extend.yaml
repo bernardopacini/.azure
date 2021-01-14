@@ -13,6 +13,12 @@ parameters:
   type: boolean
 - name: STEPS_MAKE
   type: string
+- name: STEPS_INSTALL
+  type: string  
+- name: STEPS_TEST
+  type: string
+
+
 
 jobs:
 - job:
@@ -46,12 +52,11 @@ jobs:
     displayName: Prepare Repository
   - script: |
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && cp $(CONFIG_FILE) config/config.mk"
-      # docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_MAKE }}"
-      ${{ parameters.STEPS_MAKE }}
+      docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_MAKE }}"
     displayName: Make Real
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
+  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_INSTALL }}"
     displayName: Install Package
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
+  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_TEST }}"
     displayName: Run Tests
 
 - job:
