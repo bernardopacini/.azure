@@ -28,9 +28,9 @@ stages:
       GCC_CONFIG: ${{ parameters.GCC_CONFIG }}
       INTEL_CONFIG: ${{ parameters.INTEL_CONFIG }}
       INPUT_FILES: ${{ parameters.INPUT_FILES }}
-      STEPS_MAKE: ${{ parameters.STEPS_MAKE }}
-      STEPS_INSTALL: ${{ parameters.STEPS_INSTALL }}
-      STEPS_TEST: ${{ parameters.STEPS_TEST }}
+      STEPS_MAKE: ${{ parameters.STEPS_MAKE_REAL }}
+      STEPS_INSTALL: ${{ parameters.STEPS_INSTALL_REAL }}
+      STEPS_TEST: ${{ parameters.STEPS_TEST_REAL }}
 
 - stage:
   dependsOn: []
@@ -43,9 +43,9 @@ stages:
       GCC_CONFIG: ${{ parameters.GCC_CONFIG }}
       INTEL_CONFIG: ${{ parameters.INTEL_CONFIG }}
       INPUT_FILES: ${{ parameters.INPUT_FILES }}
-      STEPS_MAKE: ${{ parameters.STEPS_MAKE }}
-      STEPS_INSTALL: ${{ parameters.STEPS_INSTALL }}
-      STEPS_TEST: ${{ parameters.STEPS_TEST }}
+      STEPS_MAKE: ${{ parameters.STEPS_MAKE_COMPLEX }}
+      STEPS_INSTALL: ${{ parameters.STEPS_INSTALL_COMPLEX }}
+      STEPS_TEST: ${{ parameters.STEPS_TEST_COMPLEX }}
   # strategy:
   #   matrix:
   #     'c7-gcc-ompi-latest':
