@@ -8,3 +8,4 @@ steps:
     then
       docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }}/input_files && ./get-input-files.sh"
     fi
+  displayName: Prepare Repository
