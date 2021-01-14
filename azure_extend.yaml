@@ -11,6 +11,8 @@ parameters:
   type: boolean
 - name: STYLE_CHECK
   type: boolean
+- name: STEPS_MAKE
+  type: string
 
 jobs:
 - job:
@@ -43,7 +45,7 @@ jobs:
         docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }}/input_files && ./get-input-files.sh"
       fi
     displayName: Prepare Repository
-  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && make"
+  - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && ${{ parameters.STEPS_MAKE }}"
     displayName: Make Real
   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && pip install ."
     displayName: Install Package
