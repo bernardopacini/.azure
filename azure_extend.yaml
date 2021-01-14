@@ -33,6 +33,7 @@ stages:
       STEPS_TEST: ${{ parameters.STEPS_TEST }}
 
 - stage:
+  dependsOn: []
   displayName: Make Complex
   condition: eq(${{ parameters.COMPLEX }}, true)
   jobs:
@@ -123,6 +124,7 @@ stages:
 #     displayName: Run Tests
 
 - stage:
+  dependsOn: []
   displayName: Style
   jobs:
   - job: flake8
