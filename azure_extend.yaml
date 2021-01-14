@@ -122,7 +122,7 @@ stages:
 #   - script: docker exec app /bin/bash -c ". \$HOME/.bashrc_mdolab && cd ${{ variables.DOCKER_WORKING_DIR }} && testflo . -v -n 1"
 #     displayName: Run Tests
 
--stage:
+- stage:
   displayName: Style
   jobs:
   - job: flake8
