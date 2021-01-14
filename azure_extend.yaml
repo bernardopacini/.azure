@@ -26,6 +26,7 @@ parameters:
 
 stages:
 - stage:
+  dependsOn: []
   displayName: Test Real
   jobs:
   - template: azure_build.yaml
