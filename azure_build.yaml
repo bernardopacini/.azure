@@ -15,6 +15,7 @@ parameters:
   type: string
 
 jobs:
+- job:
   strategy:
     matrix:
       'c7-gcc-ompi-latest':
